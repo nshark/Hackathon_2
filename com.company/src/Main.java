@@ -3,5 +3,8 @@ public class Main {
 
         System.out.println("let us begin");
         System.out.println("devan was here");
+
+        int count = 4;
+        System.out.println(count);
     }
 }
