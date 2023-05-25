@@ -19,6 +19,10 @@ public class Patient {
         symptoms = newsymptoms;
     }
 
+    public ArrayList<String> getSymptoms(){
+        return symptoms;
+    }
+
     public void addSymptom(String input){
         // add a check to make sure the symptom is real
         symptoms.add(input);
