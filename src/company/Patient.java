@@ -4,13 +4,14 @@ import java.util.*;
 
 public class Patient {
     private ArrayList<String> symptoms;
-    private String gender;
+    private boolean gender;
     private int age;
+    private Deque<String> questions;
 
     public Patient(){
 
     }
-    public Patient(String gender, int age){
+    public Patient(boolean gender, int age){
         this.gender = gender;
         this.age = age;
     }
@@ -28,7 +29,7 @@ public class Patient {
         symptoms.add(input);
     }
 
-    public void setGender(String gender){
+    public void setGender(boolean gender){
         this.gender = gender;
     }
 
@@ -36,7 +37,7 @@ public class Patient {
         this.age = age;
     }
 
-    public String getGender(){
+    public boolean getGender(){
         return gender;
     }
 
@@ -49,6 +50,28 @@ public class Patient {
     }
 
     public String getDiagnosis(){
+        org.json.simple.JSONObject jsonObject;
+        try {
+
+            org.json.simple.JSONArray msg = (org.json.simple.JSONArray) jsonObject.get("Issue");
+
+            int n =   msg.size(); //(msg).length();
+            for (int i = 0; i < n; i++) {
+                //String test =(String) msg.get(i).toString();
+                org.json.simple.JSONObject test = (org.json.simple.JSONObject) msg.get(i);
+                org.json.simple.JSONObject test2 = (org.json.simple.JSONObject) test.get("ability");
+                String abilityName = (String) test2.get("name");
+                System.out.println(abilityName);
+                // System.out.println(person.getInt("key"));
+            }
+            String name= (String)jsonObject.get("height").toString();
+            System.out.println(name);
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
