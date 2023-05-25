@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Patient {
     private ArrayList<String> symptoms;
-    private boolean gender;
+    private boolean isMale;
     private int age;
     private Deque<String> questions;
 
@@ -12,7 +12,7 @@ public class Patient {
 
     }
     public Patient(boolean gender, int age){
-        this.gender = gender;
+        this.isMale = gender;
         this.age = age;
     }
 
@@ -29,16 +29,16 @@ public class Patient {
         symptoms.add(input);
     }
 
-    public void setGender(boolean gender){
-        this.gender = gender;
+    public void setMale(boolean male){
+        this.isMale = male;
     }
 
     public void setAge(int age){
         this.age = age;
     }
 
-    public boolean getGender(){
-        return gender;
+    public boolean getMale(){
+        return isMale;
     }
 
     public int getAge(){
@@ -57,15 +57,8 @@ public class Patient {
 
             int n =   msg.size(); //(msg).length();
             for (int i = 0; i < n; i++) {
-                //String test =(String) msg.get(i).toString();
                 org.json.simple.JSONObject test = (org.json.simple.JSONObject) msg.get(i);
-                org.json.simple.JSONObject test2 = (org.json.simple.JSONObject) test.get("ability");
-                String abilityName = (String) test2.get("name");
-                System.out.println(abilityName);
-                // System.out.println(person.getInt("key"));
             }
-            String name= (String)jsonObject.get("height").toString();
-            System.out.println(name);
         }
 
         catch (Exception e) {
