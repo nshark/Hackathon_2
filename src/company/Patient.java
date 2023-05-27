@@ -63,20 +63,23 @@ public class Patient {
 
     public ArrayList<String> getQuestions(){
         org.json.simple.JSONObject jsonObject = ApiInterface.getQuestions(this);
-        return null;
-        // JOEY: RETURN EMPTY ARRAYLIST IF NO QUESTIONS, NOT NULL PLEASE
+
+
+        return new ArrayList<String>();
     }
 
+
     public ArrayList<String> getDiagnoses(){
-        // JOEY: RETURN EMPTY ARRAYLIST IF NO QUESTIONS, NOT NULL PLEASE
-        org.json.simple.JSONObject jsonObject = ApiInterface.getDiagnoses(this);
+        org.json.simple.JSONArray allIssues = ApiInterface.getDiagnoses(this);
+        ArrayList<String> result = new ArrayList<>();
+
         try {
-
-            org.json.simple.JSONArray msg = (org.json.simple.JSONArray) jsonObject.get("Issue");
-
-            int n =   msg.size(); //(msg).length();
+            int n = allIssues.size();
             for (int i = 0; i < n; i++) {
-                org.json.simple.JSONObject test = (org.json.simple.JSONObject) msg.get(i);
+                org.json.simple.JSONObject issue = (org.json.simple.JSONObject) allIssues.get(i);
+                HashMap<String, String> issueInfo = (HashMap<String, String>) issue.get("Issue");
+                String issueName = issueInfo.get("Name");
+                result.add(issueName);
             }
         }
 
@@ -84,7 +87,7 @@ public class Patient {
             e.printStackTrace();
         }
 
-        return null;
+        return result;
     }
 
 }
