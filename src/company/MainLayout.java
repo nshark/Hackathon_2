@@ -18,8 +18,8 @@ public class MainLayout {
     JPanel main = new JPanel(new GridLayout(3,1));
     JPanel displaysymptoms = new JPanel(new GridLayout(2, 5));
     TreeSet<String> symptoms = new TreeSet<>();
-    public MainLayout(Patient p) {
-
+    public MainLayout(Patient patient) {
+        p = patient;
 
         JPanel split = new JPanel();
         split.add(new JLabel(" Click to Remove: ", SwingConstants.CENTER), BorderLayout.WEST);
@@ -32,7 +32,36 @@ public class MainLayout {
         JPanel sfield = new JPanel(new BorderLayout());
         sfield.add(symptomlabel, BorderLayout.WEST);
         sfield.add(in, BorderLayout.CENTER);
-        JPanel top = new JPanel(new GridLayout(3, 1));
+        JPanel top = new JPanel(new GridLayout(4, 1));
+        JPanel gandb = new JPanel(new GridLayout(1,2));
+        JPanel gender = new JPanel(new GridLayout(1,3));
+
+        gender.add(new JLabel("Male"));
+
+        JToggleButton toggle = new JToggleButton("Male");
+        toggle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                p.setMale(!p.getMale());
+            }
+        });
+        gender.add(toggle);
+
+        gender.add(new JLabel("Female"));
+
+
+
+
+        JPanel birth = new JPanel(new BorderLayout());
+        birth.add(new JLabel("     Birth Year: "), BorderLayout.WEST);
+        JTextField year = new JTextField();
+        birth.add(year, BorderLayout.CENTER);
+
+
+
+        gandb.add(gender);
+        gandb.add(birth);
+        top.add(gandb);
         top.add(sfield);
         top.add(add);
         top.add(submit);
@@ -57,6 +86,12 @@ public class MainLayout {
                 /*
                 add layout stuff
                 */
+                try {
+                    p.setAge(Integer.parseInt(year.getText()));
+                }
+                catch(Exception ex) {
+                    year.setText("Invalid Number Format, Try Again");
+                }
             }
         });
         mf.add(top, BorderLayout.NORTH);

@@ -59,7 +59,7 @@ public class Patient {
     }
 
     public String getDiagnosis(){
-        org.json.simple.JSONObject jsonObject;
+        org.json.simple.JSONObject jsonObject = new JSONObject();
         try {
 
             org.json.simple.JSONArray msg = (org.json.simple.JSONArray) jsonObject.get("Issue");
