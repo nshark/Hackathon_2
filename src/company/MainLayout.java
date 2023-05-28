@@ -4,7 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class MainLayout {
@@ -19,6 +23,9 @@ public class MainLayout {
     JPanel displaysymptoms = new JPanel(new GridLayout(2, 5));
     TreeSet<String> symptoms = new TreeSet<>();
     JPanel split;
+    static Dimension d = new Dimension(1300, 800);
+    static TreeMap<String, Integer> symptomset = ApiInterface.getSymptoms();
+    static JPanel allsymptoms;
     public MainLayout(Patient patient) {
         p = patient;
         System.out.println(p.getMale());
@@ -30,8 +37,22 @@ public class MainLayout {
         main.add(new JLabel(""));
 //        this.p = p;
         mf.setLayout(new BorderLayout());
-        mf.setSize(1200, 800);
+        mf.setSize(d);
         in = new JTextField();
+         allsymptoms = new JPanel(new GridLayout(symptomset.size(), 1));
+        for(String s: symptomset.keySet()) allsymptoms.add(new JLabel(s));
+        JScrollPane symptomscroll = new JScrollPane(allsymptoms);
+        JPanel allsymptompanel = new JPanel(new BorderLayout());
+        JPanel textpanel = new JPanel(new GridLayout(2,1));
+        textpanel.add(new JLabel("List of symptoms. Filter by trying to add a symptom."));
+        textpanel.add(new JLabel( "It will include all symptoms with your text included."));
+        allsymptompanel.add(textpanel, BorderLayout.NORTH);
+
+        allsymptompanel.add(symptomscroll, BorderLayout.CENTER);
+        mf.add(allsymptompanel, BorderLayout.EAST);
+
+
+
         JPanel sfield = new JPanel(new BorderLayout());
         sfield.add(symptomlabel, BorderLayout.WEST);
         sfield.add(in, BorderLayout.CENTER);
@@ -57,7 +78,7 @@ public class MainLayout {
                     toggle.setText("Change to Female");
                 }
                 mf.pack();
-                mf.setSize(1200, 800);
+                mf.setSize(d);
             }
         });
         gender.add(toggle);
@@ -85,11 +106,13 @@ public class MainLayout {
             public void actionPerformed(ActionEvent e) {
 //                boolean valid = p.input(in.getText());
 
-                boolean valid = p.addSymptom(in.getText());
+                boolean valid = p.addSymptom(in.getText().toLowerCase());
                 if(valid) {
                     updateSymptomLayout();
+                    in.setText("");
                 }
                 else {
+                    updateSymptomList();
                     in.setText("Invalid Symptom. Try Again");
                 }
             }
@@ -131,6 +154,8 @@ public class MainLayout {
         questionpanel.add(instructions, BorderLayout.NORTH);
         for(String s: questions) newsymptoms.append(s + "\n");
         JScrollPane scroller = new JScrollPane(newsymptoms);
+        JPanel allsymptompanel = new JPanel(new BorderLayout());
+
         questionpanel.add(scroller, BorderLayout.CENTER);
         main.add(questionpanel);
 
@@ -138,7 +163,9 @@ public class MainLayout {
         chattext.setEditable(false);
 
         JScrollPane chatInfo = new JScrollPane(chattext);
-
+        JPanel chatpanel = new JPanel(new BorderLayout());
+        chatpanel.add(new JLabel("Info From RudeGPT:", SwingConstants.CENTER), BorderLayout.NORTH);
+        chatpanel.add(chatInfo, BorderLayout.CENTER);
         JPanel diagnosespanel = new JPanel(new BorderLayout());
         JPanel instructions2 = new JPanel(new GridLayout(3,1));
         instructions2.add(new JLabel("Below Are Our AI Doctor's Possible Diagnoses For Your Illness", SwingConstants.CENTER));
@@ -147,7 +174,7 @@ public class MainLayout {
         diagnosespanel.add(instructions2, BorderLayout.NORTH);
         ArrayList<String> list = p.getDiagnoses();
         if(list == null) list = new ArrayList<>();
-        for(int i = 0; i<100; i++) list.add("Impending Death");
+//        for(int i = 0; i<100; i++) list.add("Impending Death");
         JPanel diagnoses = new JPanel(new GridLayout(list.size(), 1));
 
 
@@ -160,16 +187,16 @@ public class MainLayout {
                 public void actionPerformed(ActionEvent e) {
                     chattext.setText(ChatGPT.getInfo(diagnosis));
                     mf.pack();
-                    mf.setSize(1200, 800);
+                    mf.setSize(d);
                 }
             });
         }
         JScrollPane scroller2 = new JScrollPane(diagnoses);
         diagnosespanel.add(scroller2);
         main.add(diagnosespanel);
-        main.add(chatInfo);
+        main.add(chatpanel);
         mf.pack();
-        mf.setSize(1200, 800);
+        mf.setSize(d);
     }
     public void updateSymptomLayout() {
         displaysymptoms.removeAll();
@@ -186,9 +213,21 @@ public class MainLayout {
             displaysymptoms.add(button);
         }
         mf.pack();
-        mf.setSize(1200, 800);
+        mf.setSize(d);
         mf.setVisible(true);
 
     }
-
+    public void updateSymptomList() {
+        allsymptoms.removeAll();
+        int count = 0;
+        for(String s: symptomset.keySet()) {
+            if(s.contains(in.getText().toLowerCase())) {
+                count++;
+                allsymptoms.add(new JLabel(s));
+            }
+        }
+        System.out.println(count);
+        mf.pack();
+        mf.setSize(d);
+    }
 }
