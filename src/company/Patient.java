@@ -12,10 +12,12 @@ import org.json.simple.parser.ParseException;
 
 
 public class Patient {
-    private ArrayList<String> symptoms;
-    private boolean isMale;
+    private TreeSet<String> symptoms = new TreeSet<>();
+    private boolean isMale = true;
     private int age;
-    private Deque<String> questions;
+//    private Deque<String> questions;
+
+    private ApiInterface apiInterface = new ApiInterface();
 
     public Patient(){
 
@@ -25,17 +27,22 @@ public class Patient {
         this.age = age;
     }
 
-    public void setSymptoms(ArrayList<String> newsymptoms){
+    public void setSymptoms(TreeSet<String> newsymptoms){
         symptoms = newsymptoms;
     }
 
-    public ArrayList<String> getSymptoms(){
+    public TreeSet<String> getSymptoms(){
         return symptoms;
     }
 
-    public void addSymptom(String input){
+    public boolean addSymptom(String input){
         // add a check to make sure the symptom is real
         symptoms.add(input);
+        return true;
+        // JOEY: RETURN FALSE IF IT IS AN INVALID SYMPTOM
+    }
+    public void removeSymptom(String input){
+        symptoms.remove(input);
     }
 
     public void setMale(boolean male){
@@ -54,19 +61,25 @@ public class Patient {
         return age;
     }
 
-    public String getQuestion(){
-        return null;
+    public ArrayList<String> getQuestions(){
+        org.json.simple.JSONObject jsonObject = ApiInterface.getQuestions(this);
+
+
+        return new ArrayList<String>();
     }
 
-    public String getDiagnosis(){
-        org.json.simple.JSONObject jsonObject;
+
+    public ArrayList<String> getDiagnoses(){
+        org.json.simple.JSONArray allIssues = ApiInterface.getDiagnoses(this);
+        ArrayList<String> result = new ArrayList<>();
+
         try {
-
-            org.json.simple.JSONArray msg = (org.json.simple.JSONArray) jsonObject.get("Issue");
-
-            int n =   msg.size(); //(msg).length();
+            int n = allIssues.size();
             for (int i = 0; i < n; i++) {
-                org.json.simple.JSONObject test = (org.json.simple.JSONObject) msg.get(i);
+                org.json.simple.JSONObject issue = (org.json.simple.JSONObject) allIssues.get(i);
+                HashMap<String, String> issueInfo = (HashMap<String, String>) issue.get("Issue");
+                String issueName = issueInfo.get("Name");
+                result.add(issueName);
             }
         }
 
@@ -74,7 +87,7 @@ public class Patient {
             e.printStackTrace();
         }
 
-        return null;
+        return result;
     }
 
 }

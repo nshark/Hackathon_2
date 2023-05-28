@@ -9,9 +9,11 @@ import java.util.HashMap;
 
 public class ApiInterface {
     static public JSONObject getDiagnoses(Patient p){
+        // This is going to need to return a jsonarray, not a jsonobject
         return null;
     }
     static public JSONObject getQuestions(Patient p){
+        // Double check documentation to make sure of the return type
         return null;
     }
     static public HashMap<String, Integer> getSymptoms(){
