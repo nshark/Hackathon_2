@@ -77,7 +77,8 @@ public class Patient {
     public ArrayList<String> getDiagnoses(){
 //        org.json.simple.JSONArray allIssues = ApiInterface.getDiagnoses(this);
         ArrayList<String> result = new ArrayList<>();
-        org.json.simple.JSONArray allIssues = null;
+//        org.json.simple.JSONArray allIssues = null;
+        org.json.simple.JSONArray allIssues = new JSONArray();
         try {
             int n = allIssues.size();
             for (int i = 0; i < n; i++) {

@@ -164,16 +164,17 @@ public class MainLayout {
 
         JScrollPane chatInfo = new JScrollPane(chattext);
         JPanel chatpanel = new JPanel(new BorderLayout());
-        chatpanel.add(new JLabel("Info From RudeGPT:", SwingConstants.CENTER), BorderLayout.NORTH);
+        chatpanel.add(new JLabel("Info From Your AI Doctor, ChatGPT:", SwingConstants.CENTER), BorderLayout.NORTH);
         chatpanel.add(chatInfo, BorderLayout.CENTER);
         JPanel diagnosespanel = new JPanel(new BorderLayout());
-        JPanel instructions2 = new JPanel(new GridLayout(3,1));
-        instructions2.add(new JLabel("Below Are Our AI Doctor's Possible Diagnoses For Your Illness", SwingConstants.CENTER));
-        instructions2.add(new JLabel("Answer Our AI Overlord's Questions to Narrow Down Your Diagnoses, OR...", SwingConstants.CENTER));
-        instructions2.add(new JLabel("Click On a Diagnosis to Get Some Information About It From ChatGPT's Rude Sibling", SwingConstants.CENTER));
+        JPanel instructions2 = new JPanel(new GridLayout(2,1));
+        instructions2.add(new JLabel("Below Are Our AI Doctor's Possible Diagnoses For Your Illness. Answer Our AI Overlord's Questions to Narrow Down Your Diagnoses, OR...", SwingConstants.CENTER));
+//        instructions2.add(new JLabel("", SwingConstants.CENTER));
+        instructions2.add(new JLabel("Click On a Diagnosis to Get Some Information About It From Your AI Doctor! (Receiving This Info Will Lead to a Short Lag on the Graphics Interface)", SwingConstants.CENTER));
         diagnosespanel.add(instructions2, BorderLayout.NORTH);
         ArrayList<String> list = p.getDiagnoses();
         if(list == null) list = new ArrayList<>();
+        list.add("impending death");
 //        for(int i = 0; i<100; i++) list.add("Impending Death");
         JPanel diagnoses = new JPanel(new GridLayout(list.size(), 1));
 
@@ -185,7 +186,15 @@ public class MainLayout {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    chattext.setText(ChatGPT.getInfo(diagnosis));
+                    try {
+                        chattext.setText("Info on " + diagnosis + "...\n");
+                        mf.pack();
+                        mf.setSize(d);
+                        chattext.append(ChatGPT.chatGPT(diagnosis));
+                    }
+                    catch(Exception e2) {
+                        chattext.setText("An Error Occured. Please Try Again Later.");
+                    }
                     mf.pack();
                     mf.setSize(d);
                 }
