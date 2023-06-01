@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -37,8 +39,11 @@ public class Patient {
 
     public boolean addSymptom(String input){
         // add a check to make sure the symptom is real
-        symptoms.add(input);
-        return true;
+        if(ApiInterface.getSymptoms().keySet().contains(input)) {
+            symptoms.add(input);
+            return true;
+        }
+        return false;
         // JOEY: RETURN FALSE IF IT IS AN INVALID SYMPTOM
     }
     public void removeSymptom(String input){
@@ -69,9 +74,10 @@ public class Patient {
 
 
     public ArrayList<String> getDiagnoses(){
-        org.json.simple.JSONArray allIssues = ApiInterface.getDiagnoses(this);
+//        org.json.simple.JSONArray allIssues = ApiInterface.getDiagnoses(this);
         ArrayList<String> result = new ArrayList<>();
-
+//        org.json.simple.JSONArray allIssues = null;
+        org.json.simple.JSONArray allIssues = new JSONArray();
         try {
             int n = allIssues.size();
             for (int i = 0; i < n; i++) {
