@@ -6,7 +6,6 @@ import java.awt.event.KeyListener;
 public class Main implements Runnable, KeyListener {
     static MainLayout layout;
     public static void main(String[] args) {
-        ApiInterface.key = ApiInterface.updateAPIkey();
         Patient p = new Patient();
         p.setMale(true);
          layout = new MainLayout(p);
@@ -34,5 +33,6 @@ public class Main implements Runnable, KeyListener {
 
         System.out.println(p.getMale());
         MainLayout layout = new MainLayout(p);
+
     }
 }

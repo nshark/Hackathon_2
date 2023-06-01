@@ -32,7 +32,7 @@ public class Patient {
     public void setSymptoms(TreeSet<String> newsymptoms){
         symptoms = newsymptoms;
     }
-    //TODO: This should return a int[] to be fed to the API, not a TreeSet<String>
+
     public TreeSet<String> getSymptoms(){
         return symptoms;
     }
@@ -61,10 +61,11 @@ public class Patient {
     public boolean getMale(){
         return isMale;
     }
+
     public int getAge(){
         return age;
     }
-    public String getGender(){if(isMale){return "Male";}else{return "Female";}}
+
     public ArrayList<String> getQuestions(){
         org.json.simple.JSONObject jsonObject = ApiInterface.getQuestions(this);
 
