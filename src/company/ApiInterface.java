@@ -1,47 +1,92 @@
 package company;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 public class ApiInterface {
-    static TreeMap<String, Integer> symptomset = null;
     static public JSONObject getDiagnoses(Patient p){
         // This is going to need to return a jsonarray, not a jsonobject
-        return null;
+        JSONParser parser = new JSONParser();
+        try {
+            return (JSONObject) parser.parse(" [  \n" +
+                    "       {  \n" +
+                    "          \"ID\":188,\n" +
+                    "          \"Name\":\"Abwehrspannung (Bauch)\"\n" +
+                    "       },\n" +
+                    "       {  \n" +
+                    "          \"ID\":238,\n" +
+                    "          \"Name\":\"Angst\"\n" +
+                    "       },\n" +
+                    "       {  \n" +
+                    "          \"ID\":97,\n" +
+                    "          \"Name\":\"Aphthen\"\n" +
+                    "       },\n" +
+                    "       {  \n" +
+                    "          \"ID\":54,\n" +
+                    "          \"Name\":\"Appetitminderung\"\n" +
+                    "       },\n" +
+                    "       {  \n" +
+                    "          \"ID\":131,\n" +
+                    "          \"Name\":\"Appetitzunahme\"\n" +
+                    "       },\n" +
+                    "       {  \n" +
+                    "          \"ID\":250,\n" +
+                    "          \"Name\":\"Atemabhängige Schmerzen\"\n" +
+                    "       },\n" +
+                    "        \n" +
+                    "    ]");
+        } catch (ParseException e) {
+            return null;
+        }
     }
     static public JSONObject getQuestions(Patient p){
         // Double check documentation to make sure of the return type
-        return null;
+        JSONParser parser =new JSONParser();
+        try {
+            return (JSONObject) parser.parse("    [  \n" +
+                    "   {  \n" +
+                    "      \"ID\":9,\n" +
+                    "      \"Name\":\"Kopfschmerzen\"\n" +
+                    "   },\n" +
+                    "   {  \n" +
+                    "      \"ID\":11,\n" +
+                    "      \"Name\":\"Fieber\"\n" +
+                    "   },\n" +
+                    "   {  \n" +
+                    "      \"ID\":44,\n" +
+                    "      \"Name\":\"Übelkeit\"\n" +
+                    "   },\n" +
+                    "   {  \n" +
+                    "      \"ID\":50,\n" +
+                    "      \"Name\":\"Durchfall\"\n" +
+                    "   },\n" +
+                    "   {  \n" +
+                    "      \"ID\":10,\n" +
+                    "      \"Name\":\"Bauchschmerzen\"\n" +
+                    "   }\n" +
+                    "]\n");
+        } catch (ParseException e) {
+            return null;
+        }
     }
-    static public TreeMap<String, Integer> getSymptoms(){
-        if(symptomset!=null) return symptomset;
-        symptomset = new TreeMap<>();
+    static public HashMap<String, Integer> getSymptoms(){
         try {
             BufferedReader br = new BufferedReader(new FileReader("symptoms.json"));
             JSONParser parse = new JSONParser();
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
             while(line != null){
-                System.out.println(line);
                 sb.append(line).append("\n");
                 line = br.readLine();
             }
-            JSONArray arr = (JSONArray) parse.parse(sb.toString());
-            for(Object o: arr) {
-                JSONObject o2 = (JSONObject) o;
-                symptomset.put(((String)o2.get("Name")).toLowerCase(),Integer.parseInt(o2.get("ID").toString()));
-            }
-            return symptomset;
-        } catch (Exception e) {
+            return (HashMap<String, Integer>) parse.parse(sb.toString());
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
         return null;
-
     }
 }

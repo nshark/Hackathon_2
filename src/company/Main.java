@@ -5,10 +5,11 @@ import java.awt.event.KeyListener;
 
 public class Main implements Runnable, KeyListener {
     static MainLayout layout;
+    static public Patient p;
     public static void main(String[] args) {
-        Patient p = new Patient();
+        p = new Patient();
         p.setMale(true);
-         layout = new MainLayout(p);
+        layout = new MainLayout(p);
 
     }
 
@@ -30,6 +31,8 @@ public class Main implements Runnable, KeyListener {
 
     @Override
     public void run() {
+        System.out.println(p.getMale());
+        MainLayout layout = new MainLayout(p);
 
     }
 }

@@ -4,11 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class MainLayout {
@@ -24,7 +21,7 @@ public class MainLayout {
     TreeSet<String> symptoms = new TreeSet<>();
     JPanel split;
     static Dimension d = new Dimension(1300, 800);
-    static TreeMap<String, Integer> symptomset = ApiInterface.getSymptoms();
+    static HashMap<String, Integer> symptomset = ApiInterface.getSymptoms();
     static JPanel allsymptoms;
     public MainLayout(Patient patient) {
         p = patient;
