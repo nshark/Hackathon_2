@@ -16,7 +16,6 @@ import java.util.TreeMap;
 
 public class ApiInterface {
     static public List<HealthDiagnosis> getDiagnoses(Patient p){
-    static public JSONArray getDiagnoses(Patient p){
         // This is going to need to return a jsonarray, not a jsonobject
         try {
             return Diagonistic._diagnosisClient.loadDiagnosis(p.getSymptomsIds(),Gender.Male, p.getAge());
@@ -33,9 +32,9 @@ public class ApiInterface {
             e.printStackTrace();
         }
         return null;
-        }
     }
-        static public HashMap<String, Long> getSymptoms(){
+
+    static public HashMap<String, Long> getSymptoms(){
             try {
                 BufferedReader br = new BufferedReader(new FileReader("symptoms.json"));
                 JSONParser parse = new JSONParser();

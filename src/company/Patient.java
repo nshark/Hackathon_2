@@ -3,7 +3,6 @@ import java.util.*;
 
 import company.Model.HealthDiagnosis;
 import company.Model.HealthItem;
-import org.json.simple.JSONArray;
 
 
 public class Patient {
@@ -68,15 +67,15 @@ public class Patient {
     }
 
     public ArrayList<String> getQuestions(){
-        org.json.simple.JSONArray allIssues = ApiInterface.getQuestions(this);
+        List<HealthItem> allIssues = ApiInterface.getQuestions(this);
         ArrayList<String> result = new ArrayList<>();
         try {
             int n = allIssues.size();
             for (int i = 0; i < n; i++) {
-                org.json.simple.JSONObject issue = (org.json.simple.JSONObject) allIssues.get(i);
-                System.out.println(issue);
+                HealthItem issue = allIssues.get(i);
+                System.out.println(issue.Name);
 //                HashMap<String, String> issueInfo = (HashMap<String, String>) issue.get("Issue");
-                String issueName = (String)issue.get("Name");
+                String issueName = issue.Name;
                 result.add(issueName);
             }
         }
