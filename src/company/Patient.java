@@ -68,10 +68,24 @@ public class Patient {
     }
 
     public ArrayList<String> getQuestions(){
-        List<HealthItem> jsonObject = ApiInterface.getQuestions(this);
+        org.json.simple.JSONArray allIssues = ApiInterface.getQuestions(this);
+        ArrayList<String> result = new ArrayList<>();
+        try {
+            int n = allIssues.size();
+            for (int i = 0; i < n; i++) {
+                org.json.simple.JSONObject issue = (org.json.simple.JSONObject) allIssues.get(i);
+                System.out.println(issue);
+//                HashMap<String, String> issueInfo = (HashMap<String, String>) issue.get("Issue");
+                String issueName = (String)issue.get("Name");
+                result.add(issueName);
+            }
+        }
 
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        return new ArrayList<String>();
+        return result;
     }
 
 
@@ -79,6 +93,7 @@ public class Patient {
         List<HealthDiagnosis> allIssues = ApiInterface.getDiagnoses(this);
         ArrayList<String> result = new ArrayList<>();
 //        org.json.simple.JSONArray allIssues = null;
+//        org.json.simple.JSONArray allIssues = new JSONArray();
         try {
             int n = allIssues.size();
             for (int i = 0; i < n; i++) {
