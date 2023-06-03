@@ -1,79 +1,37 @@
 package company;
 
+import company.Model.Gender;
+import company.Model.HealthDiagnosis;
+import company.Model.HealthItem;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ApiInterface {
-    static public JSONObject getDiagnoses(Patient p){
+    static public List<HealthDiagnosis> getDiagnoses(Patient p){
         // This is going to need to return a jsonarray, not a jsonobject
-        JSONParser parser = new JSONParser();
         try {
-            return (JSONObject) parser.parse(" [  \n" +
-                    "       {  \n" +
-                    "          \"ID\":188,\n" +
-                    "          \"Name\":\"Abwehrspannung (Bauch)\"\n" +
-                    "       },\n" +
-                    "       {  \n" +
-                    "          \"ID\":238,\n" +
-                    "          \"Name\":\"Angst\"\n" +
-                    "       },\n" +
-                    "       {  \n" +
-                    "          \"ID\":97,\n" +
-                    "          \"Name\":\"Aphthen\"\n" +
-                    "       },\n" +
-                    "       {  \n" +
-                    "          \"ID\":54,\n" +
-                    "          \"Name\":\"Appetitminderung\"\n" +
-                    "       },\n" +
-                    "       {  \n" +
-                    "          \"ID\":131,\n" +
-                    "          \"Name\":\"Appetitzunahme\"\n" +
-                    "       },\n" +
-                    "       {  \n" +
-                    "          \"ID\":250,\n" +
-                    "          \"Name\":\"Atemabhängige Schmerzen\"\n" +
-                    "       },\n" +
-                    "        \n" +
-                    "    ]");
-        } catch (ParseException e) {
-            return null;
+            return Diagonistic._diagnosisClient.loadDiagnosis(p.getSymptomsIds(),Gender.Male, p.getAge());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
-    static public JSONObject getQuestions(Patient p){
+    static public List<HealthItem> getQuestions(Patient p){
         // Double check documentation to make sure of the return type
-        JSONParser parser =new JSONParser();
         try {
-            return (JSONObject) parser.parse("    [  \n" +
-                    "   {  \n" +
-                    "      \"ID\":9,\n" +
-                    "      \"Name\":\"Kopfschmerzen\"\n" +
-                    "   },\n" +
-                    "   {  \n" +
-                    "      \"ID\":11,\n" +
-                    "      \"Name\":\"Fieber\"\n" +
-                    "   },\n" +
-                    "   {  \n" +
-                    "      \"ID\":44,\n" +
-                    "      \"Name\":\"Übelkeit\"\n" +
-                    "   },\n" +
-                    "   {  \n" +
-                    "      \"ID\":50,\n" +
-                    "      \"Name\":\"Durchfall\"\n" +
-                    "   },\n" +
-                    "   {  \n" +
-                    "      \"ID\":10,\n" +
-                    "      \"Name\":\"Bauchschmerzen\"\n" +
-                    "   }\n" +
-                    "]\n");
-        } catch (ParseException e) {
-            return null;
+            return Diagonistic._diagnosisClient.loadProposedSymptoms(p.getSymptomsIds(),Gender.Male, p.getAge());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
-    static public HashMap<String, Integer> getSymptoms(){
+    static public HashMap<String, Long> getSymptoms(){
         try {
             BufferedReader br = new BufferedReader(new FileReader("symptoms.json"));
             JSONParser parse = new JSONParser();
@@ -83,7 +41,12 @@ public class ApiInterface {
                 sb.append(line).append("\n");
                 line = br.readLine();
             }
-            return (HashMap<String, Integer>) parse.parse(sb.toString());
+            ArrayList<JSONObject> vn = (ArrayList<JSONObject>) parse.parse(sb.toString());
+            HashMap<String, Long> si = new HashMap<>();
+            for (JSONObject kl : vn){
+                si.put((String) kl.get("Name"), (Long) kl.get("ID"));
+            }
+            return si;
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }

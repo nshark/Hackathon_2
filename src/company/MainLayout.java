@@ -21,7 +21,7 @@ public class MainLayout {
     TreeSet<String> symptoms = new TreeSet<>();
     JPanel split;
     static Dimension d = new Dimension(1300, 800);
-    static HashMap<String, Integer> symptomset = ApiInterface.getSymptoms();
+    static HashMap<String, Long> symptomset = ApiInterface.getSymptoms();
     static JPanel allsymptoms;
     public MainLayout(Patient patient) {
         p = patient;

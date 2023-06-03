@@ -1,16 +1,9 @@
 package company;
 import java.util.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
+import company.Model.HealthDiagnosis;
+import company.Model.HealthItem;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 
 public class Patient {
@@ -36,10 +29,18 @@ public class Patient {
     public TreeSet<String> getSymptoms(){
         return symptoms;
     }
-
+    public List<Integer> getSymptomsIds(){
+        ArrayList<Integer> symp = new ArrayList<>();
+        String[] si = (String[]) symptoms.toArray();
+        HashMap<String, Long> sm = ApiInterface.getSymptoms();
+        for (int i = 0; i < symptoms.size(); i++) {
+            symp.add(Math.toIntExact(sm.get(si[i])));
+        }
+        return symp;
+    }
     public boolean addSymptom(String input){
         // add a check to make sure the symptom is real
-        if(ApiInterface.getSymptoms().keySet().contains(input)) {
+        if(ApiInterface.getSymptoms().containsKey(input)) {
             symptoms.add(input);
             return true;
         }
@@ -67,7 +68,7 @@ public class Patient {
     }
 
     public ArrayList<String> getQuestions(){
-        org.json.simple.JSONObject jsonObject = ApiInterface.getQuestions(this);
+        List<HealthItem> jsonObject = ApiInterface.getQuestions(this);
 
 
         return new ArrayList<String>();
@@ -75,16 +76,14 @@ public class Patient {
 
 
     public ArrayList<String> getDiagnoses(){
-//        org.json.simple.JSONArray allIssues = ApiInterface.getDiagnoses(this);
+        List<HealthDiagnosis> allIssues = ApiInterface.getDiagnoses(this);
         ArrayList<String> result = new ArrayList<>();
 //        org.json.simple.JSONArray allIssues = null;
-        org.json.simple.JSONArray allIssues = new JSONArray();
         try {
             int n = allIssues.size();
             for (int i = 0; i < n; i++) {
-                org.json.simple.JSONObject issue = (org.json.simple.JSONObject) allIssues.get(i);
-                HashMap<String, String> issueInfo = (HashMap<String, String>) issue.get("Issue");
-                String issueName = issueInfo.get("Name");
+                HealthDiagnosis issue = allIssues.get(i);;
+                String issueName = issue.Issue.IcdName;
                 result.add(issueName);
             }
         }

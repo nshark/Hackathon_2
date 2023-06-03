@@ -10,7 +10,7 @@ public class Main implements Runnable, KeyListener {
         p = new Patient();
         p.setMale(true);
         layout = new MainLayout(p);
-
+        Diagonistic.setup();
     }
 
     @Override
