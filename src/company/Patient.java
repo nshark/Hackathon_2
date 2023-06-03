@@ -31,7 +31,7 @@ public class Patient {
     public List<Integer> getSymptomsIds(){
         ArrayList<Integer> symp = new ArrayList<>();
         String[] si = (String[]) symptoms.toArray();
-        HashMap<String, Long> sm = ApiInterface.getSymptoms();
+        TreeMap<String, Long> sm = ApiInterface.getSymptoms();
         for (int i = 0; i < symptoms.size(); i++) {
             symp.add(Math.toIntExact(sm.get(si[i])));
         }
@@ -39,7 +39,7 @@ public class Patient {
     }
     public boolean addSymptom(String input){
         // add a check to make sure the symptom is real
-        if(ApiInterface.getSymptoms().containsKey(input)) {
+        if(ApiInterface.getSymptoms().containsKey(input.toLowerCase())) {
             symptoms.add(input);
             return true;
         }

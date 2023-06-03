@@ -34,7 +34,7 @@ public class ApiInterface {
         return null;
     }
 
-    static public HashMap<String, Long> getSymptoms(){
+    static public TreeMap<String, Long> getSymptoms(){
             try {
                 BufferedReader br = new BufferedReader(new FileReader("symptoms.json"));
                 JSONParser parse = new JSONParser();
@@ -45,10 +45,11 @@ public class ApiInterface {
                     line = br.readLine();
                 }
                 ArrayList<JSONObject> vn = (ArrayList<JSONObject>) parse.parse(sb.toString());
-                HashMap<String, Long> si = new HashMap<>();
+                TreeMap<String, Long> si = new TreeMap<>();
                 for (JSONObject kl : vn){
-                    si.put((String) kl.get("Name"), (Long) kl.get("ID"));
+                    si.put(((String) kl.get("Name")).toLowerCase(), (Long) kl.get("ID"));
                 }
+                for(String s: si.keySet()) System.out.println(s);
                 return si;
             } catch (IOException | ParseException e) {
                 e.printStackTrace();
