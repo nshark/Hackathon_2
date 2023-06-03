@@ -30,10 +30,9 @@ public class Patient {
     }
     public List<Integer> getSymptomsIds(){
         ArrayList<Integer> symp = new ArrayList<>();
-        String[] si = (String[]) symptoms.toArray();
         TreeMap<String, Long> sm = ApiInterface.getSymptoms();
-        for (int i = 0; i < symptoms.size(); i++) {
-            symp.add(Math.toIntExact(sm.get(si[i])));
+        for (String s : symptoms) {
+            symp.add(Math.toIntExact(sm.get(s)));
         }
         return symp;
     }

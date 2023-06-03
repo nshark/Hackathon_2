@@ -51,7 +51,6 @@ public class Diagonistic {
         try {
             _diagnosisClient = new DiagnosisClient(userName, password, authUrl, language, healthUrl);
 
-            simulate();
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
