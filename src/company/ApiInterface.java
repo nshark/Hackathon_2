@@ -1,18 +1,20 @@
 package company;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class ApiInterface {
-    static public JSONObject getDiagnoses(Patient p){
+    static public JSONArray getDiagnoses(Patient p){
         // This is going to need to return a jsonarray, not a jsonobject
         JSONParser parser = new JSONParser();
         try {
-            return (JSONObject) parser.parse(" [  \n" +
+            return (JSONArray) parser.parse(" [  \n" +
                     "       {  \n" +
                     "          \"ID\":188,\n" +
                     "          \"Name\":\"Abwehrspannung (Bauch)\"\n" +
@@ -43,11 +45,11 @@ public class ApiInterface {
             return null;
         }
     }
-    static public JSONObject getQuestions(Patient p){
+    static public JSONArray getQuestions(Patient p){
         // Double check documentation to make sure of the return type
         JSONParser parser =new JSONParser();
         try {
-            return (JSONObject) parser.parse("    [  \n" +
+            return (JSONArray) parser.parse("    [  \n" +
                     "   {  \n" +
                     "      \"ID\":9,\n" +
                     "      \"Name\":\"Kopfschmerzen\"\n" +
@@ -73,7 +75,7 @@ public class ApiInterface {
             return null;
         }
     }
-    static public HashMap<String, Integer> getSymptoms(){
+    static public TreeMap<String, Integer> getSymptoms(){
         try {
             BufferedReader br = new BufferedReader(new FileReader("symptoms.json"));
             JSONParser parse = new JSONParser();
@@ -83,7 +85,15 @@ public class ApiInterface {
                 sb.append(line).append("\n");
                 line = br.readLine();
             }
-            return (HashMap<String, Integer>) parse.parse(sb.toString());
+            TreeMap<String,Integer> map = new TreeMap<>();
+            JSONArray arr = (JSONArray)parse.parse(sb.toString());
+            for(Object o: arr) {
+                System.out.println(o);
+                JSONObject o2 = (JSONObject) o;
+                map.put(((String)o2.get("Name")).toLowerCase(), Integer.parseInt(o2.get("ID").toString()));
+//                o2.get("name");
+            }
+            return map;
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }

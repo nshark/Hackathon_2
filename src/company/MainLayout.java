@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class MainLayout {
@@ -21,7 +22,7 @@ public class MainLayout {
     TreeSet<String> symptoms = new TreeSet<>();
     JPanel split;
     static Dimension d = new Dimension(1300, 800);
-    static HashMap<String, Integer> symptomset = ApiInterface.getSymptoms();
+    static TreeMap<String, Integer> symptomset = ApiInterface.getSymptoms();
     static JPanel allsymptoms;
     public MainLayout(Patient patient) {
         p = patient;
@@ -127,6 +128,7 @@ public class MainLayout {
                 }
                 catch(Exception ex) {
                     year.setText("Invalid Number Format, Try Again");
+                    ex.printStackTrace();
                 }
             }
         });
@@ -171,7 +173,7 @@ public class MainLayout {
         diagnosespanel.add(instructions2, BorderLayout.NORTH);
         ArrayList<String> list = p.getDiagnoses();
         if(list == null) list = new ArrayList<>();
-        list.add("impending death");
+//        list.add("impending death");
 //        for(int i = 0; i<100; i++) list.add("Impending Death");
         JPanel diagnoses = new JPanel(new GridLayout(list.size(), 1));
 
